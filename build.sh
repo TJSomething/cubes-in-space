@@ -39,5 +39,5 @@ mkdir -p "$BUILD_DIR/cubes"
 cp -r "$ROOT_DIR/src/cubes/"* "$BUILD_DIR/cubes/"
 cd "$BUILD_DIR/cubes/"
 cp ../redbean.com root-app.com
-zip root-app.com ./*.js ./*.html
+zip root-app.com ./*.js ./*.html ./*.ico
 mv root-app.com "$OUT_DIR/root-app.com"
