@@ -1,4 +1,6 @@
 (local fm (require :fullmoon))
+(local math (require :math))
+(local string (require :string))
 
 (local streamServices [
   "Hulu"
@@ -111,12 +113,16 @@
   (fn [r]
     (case-try (. r :params "streamers[]")
       streamers (getAnime streamers 0)
-      (200 _ listResp) (. (DecodeJson listResp) :meta :count)
-      animeCount (% (Rand64) animeCount)
-      offset (getAnime streamers offset)
+      (200 _ listResp) (. (DecodeJson (do (print listResp) listResp)) :meta :count)
+      animeCount (math.random 0 (- (do (print animeCount) animeCount) 1))
+      offset (getAnime streamers (do (print offset) offset))
       (200 _ randomResp) (. (DecodeJson randomResp) :data 1 :attributes :slug)
       slug (fm.serveContent "random" {: slug})
       (catch
         (_) (fm.serveError 500)))))
+
+(let [randBytes (GetRandomBytes 16)
+      (randInt1 randInt2) (string.unpack "I8I8" randBytes)]
+  (math.randomseed randInt1 randInt2))
 
 (fm.run)
