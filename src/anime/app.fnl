@@ -113,9 +113,9 @@
   (fn [r]
     (case-try (. r :params "streamers[]")
       streamers (getAnime streamers 0)
-      (200 _ listResp) (. (DecodeJson (do (print listResp) listResp)) :meta :count)
-      animeCount (math.random 0 (- (do (print animeCount) animeCount) 1))
-      offset (getAnime streamers (do (print offset) offset))
+      (200 _ listResp) (. (DecodeJson listResp) :meta :count)
+      animeCount (math.random 0 (- animeCount 1))
+      offset (getAnime streamers offset)
       (200 _ randomResp) (. (DecodeJson randomResp) :data 1 :attributes :slug)
       slug (fm.serveContent "random" {: slug})
       (catch
