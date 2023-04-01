@@ -91,12 +91,12 @@
 
 (fn getAnime [services offset]
   (let [offsetParam (.. "page[offset]=" offset)
-        initParams ["fields[anime]=slug"
-                    "page[limit]=1"
-                    offsetParam
-                    "sort=-user_count"]
-        params (icollect [_ v (ipairs services) &into initParams]
-                 (.. "filter[streamers]=" (fm.escapePath v)))
+        serviceParam (fm.escapePath (table.concat services ","))
+        params ["fields[anime]=slug"
+                "page[limit]=1"
+                offsetParam
+                (.. "filter[streamers]=" serviceParam)
+                "sort=-user_count"]
         reqParams {:headers {:Accept "application/vnd.api+json"}}
         url (.. "https://kitsu.io/api/edge/anime?" (table.concat params "&"))]
     (Fetch url reqParams)))
